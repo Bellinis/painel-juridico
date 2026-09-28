@@ -2,117 +2,317 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Jurídico - RP</title>
+    <title>Painel Jurídico - Sistema Unificado</title>
     <style>
-        body { background-color: #121214; color: #e1e1e6; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background-color: #202024; padding: 30px; border-radius: 8px; width: 420px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 20px 0; }
-        h2 { color: #00b37e; text-align: center; }
-        label { display: block; margin-top: 15px; font-size: 14px; }
-        input[type="text"], input[type="number"] { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; }
-        /* Remove as setinhas feias do campo de número em alguns navegadores */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        .checkbox-container { display: flex; align-items: center; margin-top: 8px; font-size: 14px; color: #c4c4cc; cursor: pointer; }
-        .checkbox-container input { margin-right: 8px; cursor: pointer; }
-        .upload-box { border: 2px dashed #29292e; padding: 15px; text-align: center; border-radius: 4px; margin-top: 5px; background-color: #121214; color: #8d8d99; font-size: 13px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #121214; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Menu Lateral */
+        sidebar { width: 260px; background-color: #202024; border-right: 1px solid #29292e; display: flex; flex-direction: column; padding: 20px; }
+        .logo { color: #00b37e; font-size: 18px; font-weight: bold; margin-bottom: 30px; text-align: center; }
+        .menu-item { padding: 12px 15px; color: #a8a8b3; text-decoration: none; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .menu-item:hover, .menu-item.active { background-color: #00b37e; color: #white; font-weight: bold; }
+
+        /* Conteúdo Principal */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
+        .card { background-color: #202024; padding: 30px; border-radius: 8px; width: 100%; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h2 { color: #00b37e; margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #29292e; padding-bottom: 10px; }
+        
+        label { display: block; margin-top: 15px; font-size: 14px; color: #c4c4cc; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
+        textarea { resize: vertical; height: 80px; }
+        
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        .checkbox-container { display: flex; align-items: center; margin-top: 10px; font-size: 14px; color: #c4c4cc; cursor: pointer; }
+        .checkbox-container input { margin-right: 8px; cursor: pointer; width: 16px; height: 16px; }
+        
+        .upload-box { border: 2px dashed #29292e; padding: 15px; text-align: center; border-radius: 4px; margin-top: 5px; background-color: #121214; color: #8d8d99; font-size: 13px; cursor: pointer; }
         .upload-box.has-image { border-color: #00b37e; color: #00b37e; }
-        button { width: 100%; background-color: #00b37e; color: white; border: none; padding: 12px; margin-top: 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        button:hover { background-color: #00875f; }
+        
+        button.btn-submit { width: 100%; background-color: #00b37e; color: white; border: none; padding: 12px; margin-top: 25px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        button.btn-submit:hover { background-color: #00875f; }
+
+        .form-section { display: none; }
+        .form-section.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>Solicitação de Nome</h2>
-        <form id="formRegistro">
-            <label>ID do Passaporte:</label>
-            <input type="number" id="passaporte" required placeholder="Ex: 1687">
+    <!-- Menu Lateral -->
+    <sidebar>
+        <div class="logo">⚖️ Suprema Corte - RP</div>
+        <div class="menu-item active" onclick="mudarAba('nome', this)">Alterar Nome</div>
+        <div class="menu-item" onclick="mudarAba('porte', this)">Porte de Arma</div>
+        <div class="menu-item" onclick="mudarAba('adocao', this)">Certidão Nascimento/Adoção</div>
+        <div class="menu-item" onclick="mudarAba('patente', this)">Patente de Sobrenome</div>
+        <div class="menu-item" onclick="mudarAba('soltura', this)">Audiência de Soltura</div>
+        <div class="menu-item" onclick="mudarAba('casamento', this)">Agendamento Casamento</div>
+    </sidebar>
 
-            <label>Nome Atual:</label>
-            <input type="text" id="nomeAtual" required placeholder="Ex: Carlito Tevez">
+    <!-- Conteúdo -->
+    <div class="main-content">
 
-            <label>Novo Nome Desejado:</label>
-            <input type="text" id="novoNome" placeholder="Ex: Carlito Silva">
-            
-            <div class="checkbox-container">
-                <input type="checkbox" id="aDefinir" onclick="toggleNovoNome()">
-                <label for="aDefinir" style="margin-top:0;">A Definir (Cliente ainda não escolheu)</label>
+        <!-- 1. ALTERAR NOME -->
+        <div id="nome" class="form-section active">
+            <div class="card">
+                <h2>Solicitação de Alteração de Nome</h2>
+                <form onsubmit="enviarFormulario(event, 'Alterar Nome')">
+                    <label>ID do Passaporte:</label>
+                    <input type="number" id="nome_passaporte" required placeholder="Ex: 1687">
+
+                    <label>Nome Atual:</label>
+                    <input type="text" id="nome_atual" required placeholder="Ex: Carlito Tevez">
+
+                    <label>Novo Nome Desejado:</label>
+                    <input type="text" id="nome_novo" placeholder="Ex: Carlito Silva">
+                    
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="nome_adefinir" onclick="toggleCampo('nome_novo', 'nome_adefinir')">
+                        <label for="nome_adefinir" style="margin-top:0;">A Definir (Cliente ainda não escolheu)</label>
+                    </div>
+
+                    <label>Comprovante de Pagamento (Clique e dê Ctrl + V):</label>
+                    <div class="upload-box" id="drop_nome" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
+
+                    <button type="submit" class="btn-submit">Enviar Solicitação</button>
+                </form>
             </div>
+        </div>
 
-            <label>Comprovante de Pagamento (Clique aqui e dê Ctrl + V):</label>
-            <div class="upload-box" id="dropZone" contenteditable="true">
-                Clique aqui e aperte Ctrl + V para colar o print do comprovante
+        <!-- 2. PORTE DE ARMA -->
+        <div id="porte" class="form-section">
+            <div class="card">
+                <h2>Solicitação de Porte de Armas</h2>
+                <form onsubmit="enviarFormulario(event, 'Porte de Arma')">
+                    <label>ID do Passaporte:</label>
+                    <input type="number" id="porte_passaporte" required placeholder="Ex: 1687">
+
+                    <label>Nome do Cidadão:</label>
+                    <input type="text" id="porte_nome" required placeholder="Ex: Carlito Tevez">
+
+                    <label>Nível do Porte:</label>
+                    <select id="porte_nivel">
+                        <option value="Nível 1 (Taser)">Nível 1 - Taser</option>
+                        <option value="Nível 2 (Pistola)">Nível 2 - Pistola</option>
+                        <option value="Nível 3 (Rifle / Grande Porte)">Nível 3 - Rifle / Grande Porte (Restrito a 00 / Altos Cargos)</option>
+                    </select>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="porte_anulacao">
+                        <label for="porte_anulacao" style="margin-top:0;">Pedido de Anulação de Etapa (Sem psicólogo/instrutor)</label>
+                    </div>
+
+                    <label>Comprovante de Pagamento / Laudos (Ctrl + V):</label>
+                    <div class="upload-box" id="drop_porte" contenteditable="true">Clique aqui e aperte Ctrl + V com os comprovantes</div>
+
+                    <button type="submit" class="btn-submit">Enviar Solicitação de Porte</button>
+                </form>
             </div>
+        </div>
 
-            <button type="submit">Enviar Solicitação</button>
-        </form>
+        <!-- 3. ADOÇÃO / NASCIMENTO -->
+        <div id="adocao" class="form-section">
+            <div class="card">
+                <h2>Certidão de Nascimento ou Adoção</h2>
+                <form onsubmit="enviarFormulario(event, 'Nascimento / Adoção')">
+                    <label>Tipo de Processo:</label>
+                    <select id="adocao_tipo">
+                        <option value="Certidão de Nascimento">Certidão de Nascimento (Com Laudo Hospitalar)</option>
+                        <option value="Certidão de Adoção">Certidão de Adoção (Com Acompanhamento de Advogado)</option>
+                    </select>
+
+                    <label>ID do Requerente / Cidadão:</label>
+                    <input type="number" id="adocao_passaporte" required placeholder="Ex: 1687">
+
+                    <label>Nome da Criança / Adotado(a):</label>
+                    <input type="text" id="adocao_nome" required placeholder="Nome completo">
+
+                    <label>Comprovante do Laudo Médico / Pagamento (Ctrl + V):</label>
+                    <div class="upload-box" id="drop_adocao" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
+
+                    <button type="submit" class="btn-submit">Emitir Certidão</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 4. PATENTE DE SOBRENOME -->
+        <div id="patente" class="form-section">
+            <div class="card">
+                <h2>Patente de Sobrenome (Validade: 3 Meses)</h2>
+                <form onsubmit="enviarFormulario(event, 'Patente de Sobrenome')">
+                    <label>ID do Requerente:</label>
+                    <input type="number" id="patente_id" required placeholder="Ex: 1687">
+
+                    <label>Sobrenome / Patente:</label>
+                    <input type="text" id="patente_nome" required placeholder="Ex: Bellini">
+
+                    <label>Nome do Patenteador / Responsável:</label>
+                    <input type="text" id="patente_responsavel" required placeholder="Ex: Naldo Bellini">
+
+                    <label>Endereço / Sede:</label>
+                    <input type="text" id="patente_endereco" required placeholder="Ex: Jurídico / Mansão 04">
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="patente_avcb" required>
+                        <label for="patente_avcb" style="margin-top:0;">Possui Laudo AVCB (Bombeiros) Aprovado? (Obrigatório)</label>
+                    </div>
+
+                    <label>Comprovante de Pagamento da Patente (Ctrl + V):</label>
+                    <div class="upload-box" id="drop_patente" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
+
+                    <button type="submit" class="btn-submit">Registrar Patente</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 5. AUDIÊNCIA DE SOLTURA -->
+        <div id="soltura" class="form-section">
+            <div class="card">
+                <h2>Audiência de Soltura (Prisão)</h2>
+                <form onsubmit="enviarFormulario(event, 'Audiência de Soltura')">
+                    <label>ID do Detento:</label>
+                    <input type="number" id="soltura_id" required placeholder="Ex: 1687">
+
+                    <label>Artigos Quebrados (Relato do Policial):</label>
+                    <textarea id="soltura_artigos" placeholder="Descreva os artigos e o motivo da prisão..."></textarea>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="soltura_direitos">
+                        <label for="soltura_direitos" style="margin-top:0;">Leitura de Direitos (Constitucionais) Omitida? (Reduz fiança em 50%)</label>
+                    </div>
+
+                    <label>Desfecho Escolhido:</label>
+                    <select id="soltura_desfecho">
+                        <option value="Pagamento de Fiança (Liberdade imediata)">Pagamento de Fiança (Liberdade com Ficha Suja)</option>
+                        <option value="Cumprimento de Pena (Tempo de prisão)">Cumprimento de Pena (Aguardar tempo detento)</option>
+                        <option value="Encaminhado ao Tribunal do Júri">Tribunal do Júri (Casos extremos / 00 de facção)</option>
+                    </select>
+
+                    <button type="submit" class="btn-submit">Concluir Audiência e Registrar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 6. AGENDAMENTO DE CASAMENTO -->
+        <div id="casamento" class="form-section">
+            <div class="card">
+                <h2>Agendamento de Casamento</h2>
+                <form onsubmit="enviarFormulario(event, 'Casamento')">
+                    <label>IDs dos Noivos (Separados por vírgula):</label>
+                    <input type="text" id="casamento_ids" required placeholder="Ex: 1687, 1483">
+
+                    <label>Combo Escolhido:</label>
+                    <select id="casamento_combo">
+                        <option value="Cartório (Simples com Certificado)">Cartório - Apenas Certificado Assinado</option>
+                        <option value="Simples (Local + Convidados + Discurso)">Simples - Local, Convidados e Discurso</option>
+                        <option value="Luxuoso (Completo + Festa + Convites)">Luxuoso - Pacote Completo com Festa e Convites</option>
+                    </select>
+
+                    <label>Comprovante de Pagamento da Taxa (Ctrl + V):</label>
+                    <div class="upload-box" id="drop_casamento" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
+
+                    <button type="submit" class="btn-submit">Agendar Casamento</button>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        let imagemArquivo = null;
+        function mudarAba(idAba, elemento) {
+            document.querySelectorAll('.form-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.getElementById(idAba).classList.add('active');
+            elemento.classList.add('active');
+        }
 
-        function toggleNovoNome() {
-            const inputNovoNome = document.getElementById('novoNome');
-            const checkADefinir = document.getElementById('aDefinir');
-            
-            if (checkADefinir.checked) {
-                inputNovoNome.value = "A Definir";
-                inputNovoNome.disabled = true;
-                inputNovoNome.style.backgroundColor = "#1a1a1e";
+        function toggleCampo(inputId, checkId) {
+            const input = document.getElementById(inputId);
+            const check = document.getElementById(checkId);
+            if (check.checked) {
+                input.value = "A Definir";
+                input.disabled = true;
+                input.style.backgroundColor = "#1a1a1e";
             } else {
-                inputNovoNome.value = "";
-                inputNovoNome.disabled = false;
-                inputNovoNome.style.backgroundColor = "#121214";
+                input.value = "";
+                input.disabled = false;
+                input.style.backgroundColor = "#121214";
             }
         }
 
-        const dropZone = document.getElementById('dropZone');
-        dropZone.addEventListener('paste', function(e) {
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].type.indexOf('image') !== -1) {
-                    imagemArquivo = items[i].getAsFile();
-                    dropZone.innerText = "Imagem colada com sucesso! ✅";
-                    dropZone.classList.add('has-image');
-                    e.preventDefault();
-                    break;
+        let imagensSalvas = {};
+        document.querySelectorAll('.upload-box').forEach(box => {
+            box.addEventListener('paste', function(e) {
+                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.indexOf('image') !== -1) {
+                        imagensSalvas[box.id] = items[i].getAsFile();
+                        box.innerText = "Imagem colada com sucesso! ✅";
+                        box.classList.add('has-image');
+                        e.preventDefault();
+                        break;
+                    }
                 }
-            }
+            });
         });
 
-        document.getElementById('formRegistro').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const passaporte = document.getElementById('passaporte').value;
-            const nomeAtual = document.getElementById('nomeAtual').value;
-            const aDefinir = document.getElementById('aDefinir').checked;
-            const novoNome = aDefinir ? "A Definir" : document.getElementById('novoNome').value;
+        async function enviarFormulario(event, tipoServico) {
+            event.preventDefault();
 
             // COLE SEU LINK DO WEBHOOK DO DISCORD ABAIXO ENTRE AS ASPAS
             const webhookURL = "COLE_SEU_WEBHOOK_AQUI";
 
-            if (!imagemArquivo) {
-                alert('Por favor, cole um print do comprovante de pagamento usando Ctrl + V na caixa indicada!');
-                return;
+            let campos = [];
+
+            if (tipoServico === 'Alterar Nome') {
+                const aDefinir = document.getElementById('nome_adefinir').checked;
+                campos.push({ name: "ID do Passaporte", value: document.getElementById('nome_passaporte').value, inline: false });
+                campos.push({ name: "Nome Atual", value: document.getElementById('nome_atual').value, inline: false });
+                campos.push({ name: "Novo Nome", value: aDefinir ? "A Definir" : document.getElementById('nome_novo').value, inline: false });
+            } else if (tipoServico === 'Porte de Arma') {
+                campos.push({ name: "ID do Passaporte", value: document.getElementById('porte_passaporte').value, inline: false });
+                campos.push({ name: "Nome do Cidadão", value: document.getElementById('porte_nome').value, inline: false });
+                campos.push({ name: "Nível Solicitado", value: document.getElementById('porte_nivel').value, inline: false });
+                campos.push({ name: "Anulação de Etapa?", value: document.getElementById('porte_anulacao').checked ? "Sim (Taxa para o Cofre do Jurídico)" : "Não", inline: false });
+            } else if (tipoServico === 'Nascimento / Adoção') {
+                campos.push({ name: "Tipo de Processo", value: document.getElementById('adocao_tipo').value, inline: false });
+                campos.push({ name: "ID do Requerente", value: document.getElementById('adocao_passaporte').value, inline: false });
+                campos.push({ name: "Nome Envolvido", value: document.getElementById('adocao_nome').value, inline: false });
+            } else if (tipoServico === 'Patente de Sobrenome') {
+                campos.push({ name: "ID do Requerente", value: document.getElementById('patente_id').value, inline: false });
+                campos.push({ name: "Sobrenome / Patente", value: document.getElementById('patente_nome').value, inline: false });
+                campos.push({ name: "Patenteador", value: document.getElementById('patente_responsavel').value, inline: false });
+                campos.push({ name: "Endereço", value: document.getElementById('patente_endereco').value, inline: false });
+                campos.push({ name: "Laudo AVCB (Bombeiros)", value: document.getElementById('patente_avcb').checked ? "Aprovado ✅" : "Pendente ❌", inline: false });
+                campos.push({ name: "Validade Automática", value: "3 Meses", inline: false });
+            } else if (tipoServico === 'Audiência de Soltura') {
+                campos.push({ name: "ID do Detento", value: document.getElementById('soltura_id').value, inline: false });
+                campos.push({ name: "Artigos Quebrados", value: document.getElementById('soltura_artigos').value, inline: false });
+                campos.push({ name: "Leitura de Direitos Omitida?", value: document.getElementById('soltura_direitos').checked ? "Sim (-50% na Fiança)" : "Não", inline: false });
+                campos.push({ name: "Desfecho", value: document.getElementById('soltura_desfecho').value, inline: false });
+            } else if (tipoServico === 'Casamento') {
+                campos.push({ name: "IDs dos Noivos", value: document.getElementById('casamento_ids').value, inline: false });
+                campos.push({ name: "Combo Escolhido", value: document.getElementById('casamento_combo').value, inline: false });
             }
 
             const formData = new FormData();
             const payload = {
                 embeds: [{
-                    title: "📄 Solicitação de Alteração de Nome",
+                    title: `📄 Solicitação: ${tipoServico}`,
                     color: 3447003,
-                    fields: [
-                        { name: "ID (Passaporte)", value: passaporte, inline: false },
-                        { name: "Nome Atual", value: nomeAtual, inline: false },
-                        { name: "Novo Nome", value: novoNome, inline: false }
-                    ],
+                    fields: campos,
                     image: { url: "attachment://comprovante.png" },
-                    footer: { text: "Painel Jurídico - Sistema Automatizado" }
+                    footer: { text: "Painel Jurídico - Suprema Corte" }
                 }]
             };
 
             formData.append('payload_json', JSON.stringify(payload));
-            formData.append('files[0]', imagemArquivo, 'comprovante.png');
+            
+            const boxIdAtiva = document.querySelector('.form-section.active .upload-box')?.id;
+            if (boxIdAtiva && imagensSalvas[boxIdAtiva]) {
+                formData.append('files[0]', imagensSalvas[boxIdAtiva], 'comprovante.png');
+            }
 
             try {
                 const response = await fetch(webhookURL, {
@@ -121,18 +321,20 @@
                 });
 
                 if(response.ok) {
-                    alert('Solicitação enviada com sucesso para o Discord com a imagem!');
-                    document.getElementById('formRegistro').reset();
-                    dropZone.innerText = "Clique aqui e aperte Ctrl + V para colar o print do comprovante";
-                    dropZone.classList.remove('has-image');
-                    imagemArquivo = null;
+                    alert('Solicitação enviada com sucesso para o Discord!');
+                    event.target.reset();
+                    if(boxIdAtiva) {
+                        document.getElementById(boxIdAtiva).innerText = "Clique aqui e aperte Ctrl + V com o print";
+                        document.getElementById(boxIdAtiva).classList.remove('has-image');
+                        delete imagensSalvas[boxIdAtiva];
+                    }
                 } else {
                     alert('Erro ao enviar. Verifique o link do Webhook.');
                 }
             } catch (error) {
-                alert('Erro de conexão.');
+                alert('Erro de conexão ao enviar.');
             }
-        });
+        }
     </script>
 
 </body>
