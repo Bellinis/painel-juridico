@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel Jurídico - Suprema Corte Nine City</title>
-    <!-- Importação da fonte cursiva idêntica ao modelo (Petit Formal Script / Great Vibes combinadas) -->
-    <link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap" rel="stylesheet">
+    <!-- Importação de fonte cursiva elegante -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0b0b0d; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
@@ -95,8 +95,8 @@
                 <form onsubmit="enviarFormulario(event, 'Alterar Nome')">
                     
                     <div class="advogado-box">
-                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Seu Nome (Salvo automaticamente):</label>
-                        <input type="text" id="advogado_global" required placeholder="Digite seu Nome (Ex: Agatha Bellini)" oninput="salvarNomeAdvogado(this.value)">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Seu Nome e ID (Salvo automaticamente):</label>
+                        <input type="text" id="advogado_global" required placeholder="Ex: Agatha Bellini | 1020" oninput="salvarNomeAdvogado(this.value)">
                     </div>
 
                     <label>ID do Passaporte:</label>
@@ -333,7 +333,7 @@
 
     </div>
 
-    <!-- Canvas com Margem Segura e Centralizada -->
+    <!-- Canvas com Margem Segura e Fonte Ajustada -->
     <canvas id="canvasCertificado" width="850" height="1300" style="display:none;"></canvas>
 
     <script>
@@ -425,8 +425,19 @@
             });
         });
 
-        // Gerador de Imagem com Posicionamento Seguro e Fonte Cursiva Exata
-        function gerarCertificadoModelo(titulo, infoCabecalho, textoPrincipal, advogado) {
+        // Função auxiliar para desenhar textos com partes em negrito
+        function desenharTextoComNegrito(ctx, partes, x, y) {
+            let cursorX = x;
+            partes.forEach(parte => {
+                ctx.font = parte.negrito ? "bold 22px 'Segoe UI'" : "22px 'Segoe UI'";
+                ctx.fillStyle = parte.cor || "#333333";
+                ctx.fillText(parte.texto, cursorX, y);
+                cursorX += ctx.measureText(parte.texto).width;
+            });
+        }
+
+        // Gerador de Imagem com Dados em Negrito e Assinatura Limpa
+        function gerarCertificadoModelo(titulo, linhasDados, parágrafosTexto, advogadoCompleto) {
             return new Promise((resolve) => {
                 const canvas = document.getElementById('canvasCertificado');
                 const ctx = canvas.getContext('2d');
@@ -435,7 +446,7 @@
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Ondas Azuis de Fundo Suaves nas Laterais
+                // Ondas Azuis de Fundo
                 ctx.fillStyle = "rgba(220, 235, 255, 0.6)";
                 ctx.beginPath();
                 ctx.arc(canvas.width + 100, -50, 450, 0, Math.PI * 2);
@@ -446,39 +457,34 @@
                 ctx.arc(-50, canvas.height + 100, 500, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Título Principal com margem segura garantida (X = 90) para não cortar nada
+                // Título Principal
                 ctx.fillStyle = "#112233";
                 ctx.font = "bold 32px 'Segoe UI'";
                 ctx.fillText(titulo.toUpperCase(), 90, 100);
 
-                // Bloco de Dados do Cidadão
-                ctx.font = "20px 'Segoe UI'";
-                ctx.fillStyle = "#222222";
+                // Bloco de Dados do Cidadão (Com dados em negrito)
                 let yInfo = 160;
-                infoCabecalho.forEach(linha => {
-                    ctx.fillText(linha, 90, yInfo);
-                    yInfo += 35;
+                linhasDados.forEach(linhaPartes => {
+                    desenharTextoComNegrito(ctx, linhaPartes, 90, yInfo);
+                    yInfo += 38;
                 });
 
                 // Linha divisória
                 ctx.strokeStyle = "#d0dce8";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(90, yInfo + 15);
-                ctx.lineTo(canvas.width - 90, yInfo + 15);
+                ctx.moveTo(90, yInfo + 10);
+                ctx.lineTo(canvas.width - 90, yInfo + 10);
                 ctx.stroke();
 
-                // Texto Descritivo / Laudo Formal
-                ctx.font = "20px 'Segoe UI'";
-                ctx.fillStyle = "#333333";
-                let yTexto = yInfo + 70;
-                
-                textoPrincipal.forEach(paragrafo => {
-                    ctx.fillText(paragrafo, 90, yTexto);
+                // Corpo do Texto (Letra maior e legível)
+                let yTexto = yInfo + 65;
+                parágrafosTexto.forEach(paragrafoPartes => {
+                    desenharTextoComNegrito(ctx, paragrafoPartes, 90, yTexto);
                     yTexto += 45;
                 });
 
-                // Bloco de Assinatura (Posicionado com segurança no rodapé)
+                // --- RODAPÉ E ASSINATURA ---
                 const linhaY = canvas.height - 200;
 
                 ctx.strokeStyle = "#888888";
@@ -488,16 +494,21 @@
                 ctx.lineTo(canvas.width - 150, linhaY);
                 ctx.stroke();
 
-                // Assinatura com a fonte cursiva exata solicitada (Petit Formal Script)
-                ctx.fillStyle = "#1b3b6f";
-                ctx.font = "56px 'Petit Formal Script', cursive";
-                ctx.textAlign = "center";
-                ctx.fillText(advogado, canvas.width / 2, linhaY - 18);
+                // Separa o nome do advogado e o ID (Ex: "Agatha Bellini | 1020" -> Nome e ID)
+                let partesAdv = advogadoCompleto.split('|');
+                let nomeAdv = partesAdv[0].trim();
+                let idAdv = partesAdv[1] ? ` | ${partesAdv[1].trim()}` : '';
 
-                // Cargo e Identificação abaixo
+                // Assinatura limpa apenas com o nome (usando a fonte Great Vibes que não corta)
+                ctx.fillStyle = "#1b3b6f";
+                ctx.font = "52px 'Great Vibes', cursive";
+                ctx.textAlign = "center";
+                ctx.fillText(nomeAdv, canvas.width / 2, linhaY - 15);
+
+                // Cargo, ID do Advogado e Suprema Corte
                 ctx.fillStyle = "#444444";
                 ctx.font = "bold 15px 'Segoe UI'";
-                ctx.fillText(`ADVOGADO(A) • SUPREMA CORTE NINE CITY`, canvas.width / 2, linhaY + 35);
+                ctx.fillText(`ADVOGADO(A)${idAdv} • SUPREMA CORTE NINE CITY`, canvas.width / 2, linhaY + 35);
 
                 canvas.toBlob(function(blob) {
                     resolve(blob);
@@ -516,7 +527,7 @@
                 return;
             }
 
-            const nomeAdvogado = localStorage.getItem('advogado_nome_ninecity') || document.getElementById('advogado_global')?.value || "Advocacia Suprema";
+            const nomeAdvogado = localStorage.getItem('advogado_nome_ninecity') || document.getElementById('advogado_global')?.value || "Advocacia Suprema | 000";
             let campos = [];
             let payload = {};
             const formData = new FormData();
@@ -550,8 +561,8 @@
                 }
 
             } else {
-                let infoCabecalho = [];
-                let textoPrincipal = [];
+                let linhasDados = [];
+                let paragrafosTexto = [];
 
                 if (tipoServico === 'Porte de Arma') {
                     const passaporte = document.getElementById('porte_passaporte').value;
@@ -564,19 +575,18 @@
                     campos.push({ name: "Nível Autorizado", value: nivel, inline: false });
                     campos.push({ name: "Anulação de Etapa?", value: anulacao, inline: false });
 
-                    infoCabecalho = [
-                        `Portador: ${cidadao}`,
-                        `Número de Identidade (Passaporte): ${passaporte}`,
-                        `Categoria Autorizada: ${nivel}`
+                    linhasDados = [
+                        [{ texto: "Portador: ", negrito: false }, { texto: cidadao, negrito: true }, { texto: ` (ID: ${passaporte})`, negrito: false }],
+                        [{ texto: "Categoria Autorizada: ", negrito: false }, { texto: nivel, negrito: true }]
                     ];
-                    textoPrincipal = [
-                        "O cidadão acima relacionado foi submetido aos trâmites legais",
-                        "e avaliação de competência exigidos pelo código de armas.",
-                        "",
-                        `Status do Processo: APTO ao manuseio e porte regulamentado.`,
-                        `Anulação de Etapa Prévia (se aplicável): ${anulacao}`,
-                        "",
-                        "Certificado com fé pública válido em todo o território de Nine City."
+                    parágrafosTexto = [
+                        [{ texto: "O cidadão acima relacionado foi submetido aos trâmites legais", negrito: false }],
+                        [{ texto: "e avaliação de competência exigidos pelo código de armas.", negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Status do Processo: ", negrito: false }, { texto: "APTO ao manuseio e porte regulamentado.", negrito: true }],
+                        [{ texto: `Anulação de Etapa Prévia: ${anulacao}`, negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Certificado com fé pública válido em todo o território de Nine City.", negrito: false }]
                     ];
                 } else if (tipoServico === 'Nascimento / Adoção') {
                     const tipo = document.getElementById('adocao_tipo').value;
@@ -589,29 +599,28 @@
                     campos.push({ name: "Tipo de Processo", value: tipo, inline: false });
                     campos.push({ name: "Genitor 1", value: `ID: ${id1} - ${nome1}`, inline: false });
                     
-                    infoCabecalho = [
-                        `Registrado(a): ${nomeCrianca} (ID: ${idCrianca})`,
-                        `Genitor(a) Responsável 1: ${nome1} (ID: ${id1})`
+                    linhasDados = [
+                        [{ texto: "Registrado(a): ", negrito: false }, { texto: nomeCrianca, negrito: true }, { texto: ` (ID: ${idCrianca})`, negrito: false }],
+                        [{ texto: "Genitor(a) 1: ", negrito: false }, { texto: nome1, negrito: true }, { texto: ` (ID: ${id1})`, negrito: false }]
                     ];
 
-                    textoPrincipal = [
-                        `Processo oficial de ${tipo} registrado nos livros da Suprema Corte.`,
-                        ""
+                    parágrafosTexto = [
+                        [{ texto: `Processo oficial de ${tipo} registrado nos livros da Suprema Corte.`, negrito: false }]
                     ];
 
                     if (!semGen2) {
                         const id2 = document.getElementById('adocao_id2').value;
                         const nome2 = document.getElementById('adocao_nome2').value;
                         campos.push({ name: "Genitor 2", value: `ID: ${id2} - ${nome2}`, inline: false });
-                        infoCabecalho.push(`Genitor(a) Responsável 2: ${nome2} (ID: ${id2})`);
-                        textoPrincipal.push(`Com a inclusão legal de ambos os genitores responsáveis.`);
+                        linhasDados.push([{ texto: "Genitor(a) 2: ", negrito: false }, { texto: nome2, negrito: true }, { texto: ` (ID: ${id2})`, negrito: false }]);
+                        parágrafosTexto.push([{ texto: "Com a inclusão legal de ambos os genitores responsáveis.", negrito: false }]);
                     } else {
-                        textoPrincipal.push(`Processo deferido com registro monoparental.`);
+                        parágrafosTexto.push([{ texto: "Processo deferido com registro monoparental.", negrito: false }]);
                     }
 
-                    textoPrincipal.push(
-                        "",
-                        "Todos os direitos e deveres civis filiais encontram-se plenamente vigentes."
+                    parágrafosTexto.push(
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Todos os direitos e deveres civis filiais encontram-se vigentes.", negrito: false }]
                     );
                 } else if (tipoServico === 'Patente de Sobrenome') {
                     const reqId = document.getElementById('patente_id').value;
@@ -624,19 +633,19 @@
                     campos.push({ name: "Patenteador", value: patResp, inline: false });
                     campos.push({ name: "Endereço", value: end, inline: false });
 
-                    infoCabecalho = [
-                        `Requerente Passaporte ID: ${reqId}`,
-                        `Patente / Sobrenome Concedido: ${patNome.toUpperCase()}`,
-                        `Patenteador Responsável: ${patResp}`
+                    linhasDados = [
+                        [{ texto: "Requerente ID: ", negrito: false }, { texto: reqId, negrito: true }],
+                        [{ texto: "Patente Concedida: ", negrito: false }, { texto: patNome.toUpperCase(), negrito: true }],
+                        [{ texto: "Patenteador Responsável: ", negrito: false }, { texto: patResp, negrito: true }]
                     ];
-                    textoPrincipal = [
-                        `A presente Carta Patente confere o direito exclusivo de uso do`,
-                        `sobrenome familiar registrado perante esta Suprema Corte.`,
-                        "",
-                        `Sede / Endereço Vinculado: ${end}`,
-                        `Validade Oficial: 1 (um) mês, renovável conforme o Código Civil.`,
-                        "",
-                        "Respeitadas todas as prerrogativas da família instituidora."
+                    parágrafosTexto = [
+                        [{ texto: "A presente Carta Patente confere o direito exclusivo de uso do", negrito: false }],
+                        [{ texto: "sobrenome familiar registrado perante esta Suprema Corte.", negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Sede / Endereço: ", negrito: false }, { texto: end, negrito: true }],
+                        [{ texto: "Validade Oficial: ", negrito: false }, { texto: "1 (um) mês, renovável.", negrito: true }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Respeitadas todas as prerrogativas da família instituidora.", negrito: false }]
                     ];
                 } else if (tipoServico === 'Alvará de Soltura') {
                     const detentoNome = document.getElementById('soltura_detento_nome').value;
@@ -649,18 +658,18 @@
                     campos.push({ name: "ID do Policial Responsável", value: policialId, inline: false });
                     campos.push({ name: "Desfecho Escolhido", value: desfecho, inline: false });
 
-                    infoCabecalho = [
-                        `Detento(a): ${detentoNome} (Passaporte ID: ${detentoId})`,
-                        `Policial Responsável pela Prisão ID: ${policialId}`
+                    linhasDados = [
+                        [{ texto: "Detento(a): ", negrito: false }, { texto: detentoNome, negrito: true }, { texto: ` (ID: ${detentoId})`, negrito: false }],
+                        [{ texto: "Policial Responsável ID: ", negrito: false }, { texto: policialId, negrito: true }]
                     ];
-                    textoPrincipal = [
-                        "A Suprema Corte expediu o presente Alvará de Soltura após",
-                        "constatação do cumprimento dos requisitos legais exigidos.",
-                        "",
-                        `Desfecho Jurídico Aplicado:`,
-                        `➔ ${desfecho}`,
-                        "",
-                        "Determina-se a imediata restituição da liberdade caso não haja outro impedimento."
+                    parágrafosTexto = [
+                        [{ texto: "A Suprema Corte expediu o presente Alvará de Soltura após", negrito: false }],
+                        [{ texto: "constatação do cumprimento dos requisitos legais exigidos.", negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Desfecho Jurídico Aplicado:", negrito: false }],
+                        [{ texto: `➔ ${desfecho}`, negrito: true }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Determina-se a imediata restituição da liberdade.", negrito: false }]
                     ];
                 } else if (tipoServico === 'Casamento') {
                     const idsNoivos = document.getElementById('casamento_ids').value;
@@ -671,24 +680,24 @@
                     campos.push({ name: "Combo Escolhido", value: combo, inline: false });
                     campos.push({ name: "Regime de Bens", value: regime, inline: false });
 
-                    infoCabecalho = [
-                        `Noivos (Passaportes IDs): ${idsNoivos}`,
-                        `Regime de Bens: ${regime}`
+                    linhasDados = [
+                        [{ texto: "Noivos (Passaportes IDs): ", negrito: false }, { texto: idsNoivos, negrito: true }],
+                        [{ texto: "Regime de Bens: ", negrito: false }, { texto: regime, negrito: true }]
                     ];
-                    textoPrincipal = [
-                        "Certificamos que foi realizada a solenidade de união civil",
-                        "perante as autoridades da Suprema Corte Nine City.",
-                        "",
-                        `Pacote / Cerimônia: ${combo}`,
-                        `O casal assume mutuidade de direitos e deveres civis a partir desta data.`,
-                        "",
-                        "Lavrado nos livros oficiais de registros matrimoniais."
+                    parágrafosTexto = [
+                        [{ texto: "Certificamos que foi realizada a solenidade de união civil", negrito: false }],
+                        [{ texto: "perante as autoridades da Suprema Corte Nine City.", negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Pacote / Cerimônia: ", negrito: false }, { texto: combo, negrito: true }],
+                        [{ texto: "O casal assume mutuidade de direitos e deveres civis.", negrito: false }],
+                        [{ texto: "", negrito: false }],
+                        [{ texto: "Lavrado nos livros oficiais de registros matrimoniais.", negrito: false }]
                     ];
                 }
 
                 campos.push({ name: "⚖️ Advogado(a) Responsável", value: nomeAdvogado, inline: false });
 
-                const blobCertificado = await gerarCertificadoModelo(tipoServico, infoCabecalho, textoPrincipal, nomeAdvogado);
+                const blobCertificado = await gerarCertificadoModelo(tipoServico, linhasDados, parágrafosTexto, nomeAdvogado);
 
                 payload = {
                     embeds: [{
