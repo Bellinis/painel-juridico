@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Jurídico - Suprema Corte Nine</title>
+    <title>Painel Jurídico - Suprema Corte Nine City</title>
     <!-- Importação de fonte cursiva elegante para a assinatura -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -68,7 +68,7 @@
             <div class="crown-logo">
                 <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5m14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14v1Z"/></svg>
             </div>
-            <div class="logo-text">SUPREMA CORTE NINE</div>
+            <div class="logo-text">SUPREMA CORTE NINE CITY</div>
         </div>
         
         <div class="menu-category">Dashboard</div>
@@ -339,7 +339,7 @@
     <script>
         // Memória do nome do advogado no navegador
         window.onload = function() {
-            const salvo = localStorage.getItem('advogado_nome_nine');
+            const salvo = localStorage.getItem('advogado_nome_ninecity');
             if(salvo) {
                 const campo = document.getElementById('advogado_global');
                 if(campo) campo.value = salvo;
@@ -347,7 +347,7 @@
         }
 
         function salvarNomeAdvogado(valor) {
-            localStorage.setItem('advogado_nome_nine', valor);
+            localStorage.setItem('advogado_nome_ninecity', valor);
         }
 
         function mudarAba(idAba, elemento) {
@@ -356,7 +356,7 @@
             document.getElementById(idAba).classList.add('active');
             elemento.classList.add('active');
             
-            const salvo = localStorage.getItem('advogado_nome_nine');
+            const salvo = localStorage.getItem('advogado_nome_ninecity');
             const campoAdv = document.getElementById('advogado_global');
             if(salvo && campoAdv) campoAdv.value = salvo;
         }
@@ -449,7 +449,7 @@
                 ctx.fillStyle = "#1a1a1a";
                 ctx.font = "bold 24px 'Segoe UI'";
                 ctx.textAlign = "center";
-                ctx.fillText("SUPREMA CORTE NINE", canvas.width / 2, 100);
+                ctx.fillText("SUPREMA CORTE NINE CITY", canvas.width / 2, 100);
 
                 ctx.fillStyle = "#c5a059";
                 ctx.font = "bold 14px 'Segoe UI'";
@@ -491,7 +491,7 @@
                 ctx.stroke();
 
                 // Assinatura em Fonte Cursiva Manuscrita EXATAMENTE POR CIMA DA LINHA
-                ctx.fillStyle = "#1b3b6f"; // Tom de tinta azulada/preta formal
+                ctx.fillStyle = "#1b3b6f";
                 ctx.font = "42px 'Great Vibes', cursive";
                 ctx.textAlign = "center";
                 ctx.fillText(advogado, canvas.width / 2, linhaY - 12);
@@ -513,7 +513,7 @@
             // COLE SEU LINK DO WEBHOOK DO DISCORD DO CANAL #REGISTRO ABAIXO ENTRE AS ASPAS
             const webhookURL = "https://discord.com/api/webhooks/1554146017572561090/gHDKqdaHVTltcnTgD5vJgJ718v99l8t2MeWwYPcgHRQDic19la0aL3QEmKNJFyxSEngO";
 
-            const nomeAdvogado = localStorage.getItem('advogado_nome_nine') || "Advocacia Suprema";
+            const nomeAdvogado = localStorage.getItem('advogado_nome_ninecity') || "Advocacia Suprema";
             let campos = [];
             let linhasCertificado = [];
 
@@ -636,7 +636,7 @@
                     color: 13882323,
                     fields: campos,
                     image: { url: "attachment://certificado.png" },
-                    footer: { text: `Emitido por ${nomeAdvogado} • Suprema Corte Nine` },
+                    footer: { text: `Emitido por ${nomeAdvogado} • Suprema Corte Nine City` },
                     timestamp: new Date().toISOString()
                 }]
             };
