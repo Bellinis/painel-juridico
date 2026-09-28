@@ -49,7 +49,7 @@
 
     <!-- Menu Lateral -->
     <sidebar>
-        <div class="logo">⚖️ Suprema Corte Nine City ⚖️</div>
+        <div class="logo">⚖️ Suprema Corte - RP</div>
         
         <div class="menu-category">Dashboard</div>
         <div class="menu-item active" onclick="mudarAba('nome', this)">Alterar Nome</div>
@@ -192,14 +192,14 @@
 
                 <label>Selecione os Artigos do Código Penal:</label>
                 <div class="artigos-list">
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="40" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (40 meses | $ 180k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="70" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (70 meses | $ 180k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="1500000" data-tempo="140" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (140 meses | $ 1.5M)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="40" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (40 meses | $ 180k)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="70" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (70 meses | $ 180k)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="1500000" data-tempo="140" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (140 meses | $ 1.5M)[cite: 11]</label>
                     <label><input type="checkbox" class="artigo-check" value="100000" data-tempo="30" data-fianca="100000" onchange="calcularTotal()"> Art. Desacato Menor (Atrapalhar Ocorrência) (30 meses | $ 100k)</label>
-                    <label><input type="checkbox" class="artigo-check" value="2000000" data-tempo="50" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Autoridade (50 meses | $ 2M)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="300000" data-tempo="70" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (70 meses | $ 300k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="0" data-tempo="100" data-fianca="0" id="art_inafia" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público [INAFIANÇÁVEL] (100 meses | Sem Fiança)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="30" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (30 meses | $ 180k)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="2000000" data-tempo="50" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Autoridade (50 meses | $ 2M)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="300000" data-tempo="70" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (70 meses | $ 300k)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="0" data-tempo="100" data-fianca="0" id="art_inafia" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público [INAFIANÇÁVEL] (100 meses | Sem Fiança)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="30" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (30 meses | $ 180k)[cite: 11]</label>
                 </div>
 
                 <div class="checkbox-container" style="margin-top: 15px;">
@@ -264,6 +264,13 @@
                         <option value="Luxuoso (Completo + Festa + Convites)">Luxuoso - Pacote Completo com Festa e Convites</option>
                     </select>
 
+                    <label>Regime de Bens (Código Civil):</label>
+                    <select id="casamento_regime">
+                        <option value="Comunhão Parcial de Bens">Comunhão Parcial de Bens (Padrão)</option>
+                        <option value="Comunhão Universal de Bens">Comunhão Universal de Bens</option>
+                        <option value="Separação Total de Bens">Separação Total de Bens</option>
+                    </select>
+
                     <label>Comprovante de Pagamento da Taxa (Ctrl + V):</label>
                     <div class="upload-box" id="drop_casamento" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
@@ -316,7 +323,7 @@
             const partePolicia = somaArtigosFianca * 0.5;
             const totalGeral = base + somaArtigosFianca;
 
-            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% das multas): $ ${partePolicia.toLocaleString('pt-BR')}`;
+            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% das multas): $ ${partePolicia.toLocaleString('pt-BR')}[cite: 11]`;
             document.getElementById('calc_tempo').innerText = `• Tempo Total de Prisão: ${somaTempo} meses ${temDelacao ? '(Com Desconto de Delação)' : ''}`;
             document.getElementById('calc_total').innerText = `Total da Fiança: $ ${totalGeral.toLocaleString('pt-BR')} ${temDelacao ? '(Com Desconto)' : ''}`;
         }
@@ -375,6 +382,7 @@
             } else if (tipoServico === 'Casamento') {
                 campos.push({ name: "IDs dos Noivos", value: document.getElementById('casamento_ids').value, inline: false });
                 campos.push({ name: "Combo Escolhido", value: document.getElementById('casamento_combo').value, inline: false });
+                campos.push({ name: "Regime de Bens", value: document.getElementById('casamento_regime').value, inline: false });
             }
 
             const formData = new FormData();
