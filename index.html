@@ -12,7 +12,6 @@
         
         .brand-container { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #23232c; }
         .crown-logo { width: 55px; height: 55px; background: linear-gradient(135deg, #3a2e22, #1f1812); border: 2px solid #d4af37; border-radius: 12px; display: inline-flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); margin-bottom: 10px; }
-        /* Desenho vetorial estilizado da coroa para carregar rápido e sem falhas */
         .crown-logo svg { width: 32px; height: 32px; fill: #d4af37; }
         .logo-text { color: #d4af37; font-size: 16px; font-weight: bold; letter-spacing: 0.5px; }
 
@@ -52,6 +51,8 @@
         .artigos-list { max-height: 180px; overflow-y: auto; background: #0b0b0d; border: 1px solid #23232c; padding: 10px; border-radius: 6px; margin-top: 6px; }
         .artigos-list label { font-size: 13px; margin-top: 6px; display: flex; align-items: center; color: #c4c4cc; }
         .artigos-list input { width: auto; margin-right: 10px; accent-color: #00b37e; }
+        
+        .advogado-box { background-color: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); padding: 15px; border-radius: 6px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -60,7 +61,6 @@
     <sidebar>
         <div class="brand-container">
             <div class="crown-logo">
-                <!-- Ícone Vetorial de Coroa Dourada -->
                 <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5m14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14v1Z"/></svg>
             </div>
             <div class="logo-text">SUPREMA CORTE NINE CITY</div>
@@ -88,6 +88,12 @@
             <div class="card">
                 <h2>Solicitação de Alteração de Nome</h2>
                 <form onsubmit="enviarFormulario(event, 'Alterar Nome')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_1" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>ID do Passaporte:</label>
                     <input type="number" id="nome_passaporte" required placeholder="Ex: 1687">
 
@@ -105,7 +111,7 @@
                     <label>Comprovante de Pagamento (Ctrl + V):</label>
                     <div class="upload-box" id="drop_nome" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Enviar Solicitação</button>
+                    <button type="submit" class="btn-submit">Enviar para #registro</button>
                 </form>
             </div>
         </div>
@@ -115,6 +121,12 @@
             <div class="card">
                 <h2>Solicitação de Porte de Armas</h2>
                 <form onsubmit="enviarFormulario(event, 'Porte de Arma')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_2" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>ID do Passaporte:</label>
                     <input type="number" id="porte_passaporte" required placeholder="Ex: 1687">
 
@@ -136,7 +148,7 @@
                     <label>Comprovante de Pagamento / Laudos (Ctrl + V):</label>
                     <div class="upload-box" id="drop_porte" contenteditable="true">Clique aqui e aperte Ctrl + V com os comprovantes</div>
 
-                    <button type="submit" class="btn-submit">Enviar Solicitação de Porte</button>
+                    <button type="submit" class="btn-submit">Enviar para #registro</button>
                 </form>
             </div>
         </div>
@@ -146,6 +158,12 @@
             <div class="card">
                 <h2>Certidão de Nascimento ou Adoção</h2>
                 <form onsubmit="enviarFormulario(event, 'Nascimento / Adoção')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_3" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>Tipo de Processo:</label>
                     <select id="adocao_tipo">
                         <option value="Certidão de Nascimento">Certidão de Nascimento (Com Laudo Hospitalar)</option>
@@ -161,7 +179,7 @@
                     <label>Comprovante do Laudo Médico / Pagamento (Ctrl + V):</label>
                     <div class="upload-box" id="drop_adocao" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Emitir Certidão</button>
+                    <button type="submit" class="btn-submit">Enviar para #registro</button>
                 </form>
             </div>
         </div>
@@ -171,6 +189,12 @@
             <div class="card">
                 <h2>Patente de Sobrenome (Validade: 1 Mês)</h2>
                 <form onsubmit="enviarFormulario(event, 'Patente de Sobrenome')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_4" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>ID do Requerente:</label>
                     <input type="number" id="patente_id" required placeholder="Ex: 1687">
 
@@ -186,7 +210,7 @@
                     <label>Comprovante de Pagamento da Patente (Ctrl + V):</label>
                     <div class="upload-box" id="drop_patente" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Registrar Patente</button>
+                    <button type="submit" class="btn-submit">Enviar para #registro</button>
                 </form>
             </div>
         </div>
@@ -231,6 +255,12 @@
             <div class="card">
                 <h2>Alvará de Soltura / Cumprimento de Pena</h2>
                 <form onsubmit="enviarFormulario(event, 'Alvará de Soltura')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_6" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>Nome do Detento:</label>
                     <input type="text" id="soltura_detento_nome" required placeholder="Ex: João da Silva">
 
@@ -254,7 +284,7 @@
                     <label>Comprovante de Pagamento / Ficha (Ctrl + V):</label>
                     <div class="upload-box" id="drop_soltura" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Emitir Documento de Soltura / Prisão</button>
+                    <button type="submit" class="btn-submit">Emitir Documento para #registro</button>
                 </form>
             </div>
         </div>
@@ -264,6 +294,12 @@
             <div class="card">
                 <h2>Agendamento de Casamento</h2>
                 <form onsubmit="enviarFormulario(event, 'Casamento')">
+                    
+                    <div class="advogado-box">
+                        <label style="margin-top:0; color: #d4af37; font-weight: bold;">Identificação do Advogado Responsável:</label>
+                        <input type="text" id="adv_nome_7" required placeholder="Seu Nome e Sobrenome (Ex: Agatha Bellini)">
+                    </div>
+
                     <label>IDs dos Noivos (Separados por vírgula):</label>
                     <input type="text" id="casamento_ids" required placeholder="Ex: 1687, 1483">
 
@@ -284,7 +320,7 @@
                     <label>Comprovante de Pagamento da Taxa (Ctrl + V):</label>
                     <div class="upload-box" id="drop_casamento" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Agendar Casamento</button>
+                    <button type="submit" class="btn-submit">Enviar para #registro</button>
                 </form>
             </div>
         </div>
@@ -356,51 +392,62 @@
         async function enviarFormulario(event, tipoServico) {
             event.preventDefault();
 
-            // COLE SEU LINK DO WEBHOOK DO DISCORD ABAIXO ENTRE AS ASPAS
+            // COLE SEU LINK DO WEBHOOK DO DISCORD DO CANAL #REGISTRO ABAIXO ENTRE AS ASPAS
             const webhookURL = "COLE_SEU_WEBHOOK_AQUI";
 
             let campos = [];
+            let nomeAdvogado = "";
 
             if (tipoServico === 'Alterar Nome') {
+                nomeAdvogado = document.getElementById('adv_nome_1').value;
                 const aDefinir = document.getElementById('nome_adefinir').checked;
                 campos.push({ name: "ID do Passaporte", value: document.getElementById('nome_passaporte').value, inline: false });
                 campos.push({ name: "Nome Atual", value: document.getElementById('nome_atual').value, inline: false });
                 campos.push({ name: "Novo Nome", value: aDefinir ? "A Definir" : document.getElementById('nome_novo').value, inline: false });
             } else if (tipoServico === 'Porte de Arma') {
+                nomeAdvogado = document.getElementById('adv_nome_2').value;
                 campos.push({ name: "ID do Passaporte", value: document.getElementById('porte_passaporte').value, inline: false });
                 campos.push({ name: "Nome do Cidadão", value: document.getElementById('porte_nome').value, inline: false });
                 campos.push({ name: "Nível Solicitado", value: document.getElementById('porte_nivel').value, inline: false });
                 campos.push({ name: "Anulação de Etapa?", value: document.getElementById('porte_anulacao').checked ? "Sim (Taxa para o Cofre do Jurídico)" : "Não", inline: false });
             } else if (tipoServico === 'Nascimento / Adoção') {
+                nomeAdvogado = document.getElementById('adv_nome_3').value;
                 campos.push({ name: "Tipo de Processo", value: document.getElementById('adocao_tipo').value, inline: false });
                 campos.push({ name: "ID do Requerente", value: document.getElementById('adocao_passaporte').value, inline: false });
                 campos.push({ name: "Nome Envolvido", value: document.getElementById('adocao_nome').value, inline: false });
             } else if (tipoServico === 'Patente de Sobrenome') {
+                nomeAdvogado = document.getElementById('adv_nome_4').value;
                 campos.push({ name: "ID do Requerente", value: document.getElementById('patente_id').value, inline: false });
                 campos.push({ name: "Sobrenome / Patente", value: document.getElementById('patente_nome').value, inline: false });
                 campos.push({ name: "Patenteador", value: document.getElementById('patente_responsavel').value, inline: false });
                 campos.push({ name: "Endereço", value: document.getElementById('patente_endereco').value, inline: false });
                 campos.push({ name: "Validade Automática", value: "1 Mês (Código Civil)", inline: false });
             } else if (tipoServico === 'Alvará de Soltura') {
+                nomeAdvogado = document.getElementById('adv_nome_6').value;
                 campos.push({ name: "Nome do Detento", value: document.getElementById('soltura_detento_nome').value, inline: false });
                 campos.push({ name: "ID do Detento", value: document.getElementById('soltura_detento_id').value, inline: false });
                 campos.push({ name: "ID do Policial Responsável", value: document.getElementById('soltura_policial_id').value, inline: false });
                 campos.push({ name: "Desfecho Escolhido", value: document.getElementById('soltura_tipo_desfecho').value, inline: false });
                 campos.push({ name: "Delação Premiada", value: document.getElementById('soltura_delacao').checked ? "Ativa 🚨 (Aviso para Invasão de Sede)" : "Não", inline: false });
             } else if (tipoServico === 'Casamento') {
+                nomeAdvogado = document.getElementById('adv_nome_7').value;
                 campos.push({ name: "IDs dos Noivos", value: document.getElementById('casamento_ids').value, inline: false });
                 campos.push({ name: "Combo Escolhido", value: document.getElementById('casamento_combo').value, inline: false });
                 campos.push({ name: "Regime de Bens", value: document.getElementById('casamento_regime').value, inline: false });
             }
 
+            // Adiciona o advogado responsável assinando o documento no embed
+            campos.push({ name: "⚖️ Advogado(a) Responsável", value: nomeAdvogado, inline: false });
+
             const formData = new FormData();
             const payload = {
                 embeds: [{
-                    title: `📄 Registro: ${tipoServico}`,
-                    color: 13882323, // Tom dourado no embed do Discord
+                    title: `📄 Registro Oficial: ${tipoServico}`,
+                    color: 13882323, // Dourado Nobre
                     fields: campos,
                     image: { url: "attachment://comprovante.png" },
-                    footer: { text: "Painel Jurídico - Suprema Corte Nine City" }
+                    footer: { text: `Emitido por ${nomeAdvogado} • Suprema Corte Nine` },
+                    timestamp: new Date().toISOString()
                 }]
             };
 
@@ -418,7 +465,7 @@
                 });
 
                 if(response.ok) {
-                    alert('Registro enviado com sucesso para o Discord!');
+                    alert('Registro enviado com sucesso para o canal #registro do Discord!');
                     event.target.reset();
                     if(boxIdAtiva) {
                         document.getElementById(boxIdAtiva).innerText = "Clique aqui e aperte Ctrl + V com o print";
@@ -426,10 +473,10 @@
                         delete imagensSalvas[boxIdAtiva];
                     }
                 } else {
-                    alert('Erro ao enviar. Verifique o link do Webhook.');
+                    alert('Erro ao enviar. Verifique o link do Webhook do Discord.');
                 }
             } catch (error) {
-                alert('Erro de conexão ao enviar.');
+                alert('Erro de conexão ao enviar para o Discord.');
             }
         }
     </script>
