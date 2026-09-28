@@ -2,67 +2,82 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Jurídico - Suprema Corte</title>
+    <title>Painel Jurídico - Suprema Corte Nobre</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #121214; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0b0d; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Menu Lateral */
-        sidebar { width: 260px; background-color: #202024; border-right: 1px solid #29292e; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .logo { color: #00b37e; font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: center; }
-        .menu-category { color: #8d8d99; font-size: 12px; font-weight: bold; margin: 15px 0 5px 5px; text-transform: uppercase; }
-        .menu-item { padding: 10px 15px; color: #a8a8b3; text-decoration: none; border-radius: 6px; margin-bottom: 5px; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        .menu-item:hover, .menu-item.active { background-color: #00b37e; color: #white; font-weight: bold; }
+        /* Menu Lateral Estilizado */
+        sidebar { width: 280px; background-color: #141418; border-right: 1px solid #23232c; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        
+        .brand-container { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #23232c; }
+        .crown-logo { width: 55px; height: 55px; background: linear-gradient(135deg, #3a2e22, #1f1812); border: 2px solid #d4af37; border-radius: 12px; display: inline-flex; justify-content: center; align-items: center; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); margin-bottom: 10px; }
+        /* Desenho vetorial estilizado da coroa para carregar rápido e sem falhas */
+        .crown-logo svg { width: 32px; height: 32px; fill: #d4af37; }
+        .logo-text { color: #d4af37; font-size: 16px; font-weight: bold; letter-spacing: 0.5px; }
+
+        .menu-category { color: #7a7a8c; font-size: 11px; font-weight: bold; margin: 15px 0 5px 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .menu-item { padding: 11px 15px; color: #b8b8c8; text-decoration: none; border-radius: 6px; margin-bottom: 4px; cursor: pointer; transition: all 0.2s ease; font-size: 13.5px; display: flex; align-items: center; gap: 10px; }
+        .menu-item:hover { background-color: #1f1f28; color: #fff; }
+        .menu-item.active { background: linear-gradient(135deg, #00b37e, #00875f); color: #fff; font-weight: bold; box-shadow: 0 4px 12px rgba(0, 179, 126, 0.3); }
 
         /* Conteúdo Principal */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
-        .card { background-color: #202024; padding: 30px; border-radius: 8px; width: 100%; max-width: 650px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        h2 { color: #00b37e; margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #29292e; padding-bottom: 10px; }
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; background: radial-gradient(circle at top right, #181820, #0b0b0d); }
+        .card { background-color: #141418; padding: 35px; border-radius: 12px; width: 100%; max-width: 680px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #23232c; }
+        h2 { color: #d4af37; margin-bottom: 20px; font-size: 20px; border-bottom: 1px solid #23232c; padding-bottom: 12px; font-weight: 600; }
         
-        label { display: block; margin-top: 15px; font-size: 14px; color: #c4c4cc; }
-        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 14px; }
-        textarea { resize: vertical; height: 80px; }
+        label { display: block; margin-top: 15px; font-size: 13.5px; color: #b8b8c8; font-weight: 500; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 11px 14px; margin-top: 6px; background-color: #0b0b0d; border: 1px solid #23232c; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 14px; transition: border-color 0.2s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #00b37e; }
+        textarea { resize: vertical; height: 90px; }
         
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
-        .checkbox-container { display: flex; align-items: center; margin-top: 10px; font-size: 14px; color: #c4c4cc; cursor: pointer; }
-        .checkbox-container input { margin-right: 8px; cursor: pointer; width: 16px; height: 16px; }
+        .checkbox-container { display: flex; align-items: center; margin-top: 12px; font-size: 13.5px; color: #b8b8c8; cursor: pointer; }
+        .checkbox-container input { margin-right: 10px; cursor: pointer; width: 16px; height: 16px; accent-color: #00b37e; }
         
-        .upload-box { border: 2px dashed #29292e; padding: 15px; text-align: center; border-radius: 4px; margin-top: 5px; background-color: #121214; color: #8d8d99; font-size: 13px; cursor: pointer; }
-        .upload-box.has-image { border-color: #00b37e; color: #00b37e; }
+        .upload-box { border: 2px dashed #23232c; padding: 20px; text-align: center; border-radius: 6px; margin-top: 8px; background-color: #0b0b0d; color: #7a7a8c; font-size: 13px; cursor: pointer; transition: border-color 0.2s; }
+        .upload-box:hover { border-color: #d4af37; }
+        .upload-box.has-image { border-color: #00b37e; color: #00b37e; background-color: rgba(0, 179, 126, 0.05); font-weight: 600; }
         
-        button.btn-submit { width: 100%; background-color: #00b37e; color: white; border: none; padding: 12px; margin-top: 25px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 15px; }
-        button.btn-submit:hover { background-color: #00875f; }
+        button.btn-submit { width: 100%; background: linear-gradient(135deg, #00b37e, #00875f); color: white; border: none; padding: 13px; margin-top: 25px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; box-shadow: 0 4px 12px rgba(0, 179, 126, 0.2); transition: opacity 0.2s; }
+        button.btn-submit:hover { opacity: 0.9; }
 
         .form-section { display: none; }
         .form-section.active { display: block; }
         
-        .calc-box { background-color: #121214; padding: 15px; border-radius: 6px; border: 1px solid #29292e; margin-top: 15px; }
-        .calc-result { color: #00b37e; font-size: 18px; font-weight: bold; margin-top: 10px; text-align: right; }
+        .calc-box { background-color: #0b0b0d; padding: 18px; border-radius: 6px; border: 1px solid #23232c; margin-top: 18px; }
+        .calc-result { color: #00b37e; font-size: 19px; font-weight: bold; margin-top: 12px; text-align: right; }
         
-        .artigos-list { max-height: 160px; overflow-y: auto; background: #121214; border: 1px solid #29292e; padding: 10px; border-radius: 4px; margin-top: 5px; }
-        .artigos-list label { font-size: 13px; margin-top: 5px; display: flex; align-items: center; }
-        .artigos-list input { width: auto; margin-right: 8px; }
+        .artigos-list { max-height: 180px; overflow-y: auto; background: #0b0b0d; border: 1px solid #23232c; padding: 10px; border-radius: 6px; margin-top: 6px; }
+        .artigos-list label { font-size: 13px; margin-top: 6px; display: flex; align-items: center; color: #c4c4cc; }
+        .artigos-list input { width: auto; margin-right: 10px; accent-color: #00b37e; }
     </style>
 </head>
 <body>
 
-    <!-- Menu Lateral -->
+    <!-- Menu Lateral com Coroa -->
     <sidebar>
-        <div class="logo">⚖️ Suprema Corte - RP</div>
+        <div class="brand-container">
+            <div class="crown-logo">
+                <!-- Ícone Vetorial de Coroa Dourada -->
+                <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5m14 3a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1h14v1Z"/></svg>
+            </div>
+            <div class="logo-text">SUPREMA CORTE NOBRE</div>
+        </div>
         
         <div class="menu-category">Dashboard</div>
-        <div class="menu-item active" onclick="mudarAba('nome', this)">Alterar Nome</div>
-        <div class="menu-item" onclick="mudarAba('porte', this)">Porte de Arma</div>
-        <div class="menu-item" onclick="mudarAba('adocao', this)">Certidão Nascimento/Adoção</div>
-        <div class="menu-item" onclick="mudarAba('patente', this)">Patente de Sobrenome</div>
+        <div class="menu-item active" onclick="mudarAba('nome', this)">📄 Alterar Nome</div>
+        <div class="menu-item" onclick="mudarAba('porte', this)">🛡️ Porte de Arma</div>
+        <div class="menu-item" onclick="mudarAba('adocao', this)">👶 Nascimento / Adoção</div>
+        <div class="menu-item" onclick="mudarAba('patente', this)">👑 Patente de Sobrenome</div>
         
         <div class="menu-category">Registros & Prisões</div>
-        <div class="menu-item" onclick="mudarAba('calculadora', this)">Calculadora Penal</div>
-        <div class="menu-item" onclick="mudarAba('soltura', this)">Alvará de Soltura</div>
+        <div class="menu-item" onclick="mudarAba('calculadora', this)">🧮 Calculadora Penal</div>
+        <div class="menu-item" onclick="mudarAba('soltura', this)">⚖️ Alvará de Soltura</div>
         
         <div class="menu-category">Outros</div>
-        <div class="menu-item" onclick="mudarAba('casamento', this)">Agendamento Casamento</div>
+        <div class="menu-item" onclick="mudarAba('casamento', this)">💍 Agendamento Casamento</div>
     </sidebar>
 
     <!-- Conteúdo -->
@@ -168,11 +183,6 @@
                     <label>Endereço / Sede:</label>
                     <input type="text" id="patente_endereco" required placeholder="Ex: Jurídico / Mansão 04">
 
-                    <div class="checkbox-container">
-                        <input type="checkbox" id="patente_avcb" required>
-                        <label for="patente_avcb" style="margin-top:0;">Possui Laudo AVCB (Bombeiros) Aprovado? (Obrigatório)</label>
-                    </div>
-
                     <label>Comprovante de Pagamento da Patente (Ctrl + V):</label>
                     <div class="upload-box" id="drop_patente" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
@@ -185,21 +195,21 @@
         <div id="calculadora" class="form-section">
             <div class="card">
                 <h2>Calculadora Penal & Fiança</h2>
-                <p style="color: #8d8d99; font-size: 13px; margin-bottom: 15px;">Selecione os artigos e o tipo de cumprimento (Fiança ou Prisão).</p>
+                <p style="color: #7a7a8c; font-size: 13px; margin-bottom: 15px;">Selecione os artigos e o tipo de cumprimento (Fiança ou Prisão).</p>
                 
                 <label>Honorários Base do Advogado ($):</label>
-                <input type="number" id="calc_base" value="1000000" readonly style="background-color: #1a1a1e; color: #00b37e;">
+                <input type="number" id="calc_base" value="1000000" readonly style="background-color: #0b0b0d; color: #00b37e;">
 
                 <label>Selecione os Artigos do Código Penal:</label>
                 <div class="artigos-list">
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="40" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (40 meses | $ 180k)[cite: 11]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="70" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (70 meses | $ 180k)[cite: 11]</label>
-                    <label><input type="checkbox" class="artigo-check" value="1500000" data-tempo="140" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (140 meses | $ 1.5M)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="40" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (40 meses | $ 180k)</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="70" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (70 meses | $ 180k)</label>
+                    <label><input type="checkbox" class="artigo-check" value="1500000" data-tempo="140" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (140 meses | $ 1.5M)</label>
                     <label><input type="checkbox" class="artigo-check" value="100000" data-tempo="30" data-fianca="100000" onchange="calcularTotal()"> Art. Desacato Menor (Atrapalhar Ocorrência) (30 meses | $ 100k)</label>
-                    <label><input type="checkbox" class="artigo-check" value="2000000" data-tempo="50" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Autoridade (50 meses | $ 2M)[cite: 11]</label>
-                    <label><input type="checkbox" class="artigo-check" value="300000" data-tempo="70" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (70 meses | $ 300k)[cite: 11]</label>
-                    <label><input type="checkbox" class="artigo-check" value="0" data-tempo="100" data-fianca="0" id="art_inafia" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público [INAFIANÇÁVEL] (100 meses | Sem Fiança)[cite: 11]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="30" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (30 meses | $ 180k)[cite: 11]</label>
+                    <label><input type="checkbox" class="artigo-check" value="2000000" data-tempo="50" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Autoridade (50 meses | $ 2M)</label>
+                    <label><input type="checkbox" class="artigo-check" value="300000" data-tempo="70" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (70 meses | $ 300k)</label>
+                    <label><input type="checkbox" class="artigo-check" value="0" data-tempo="100" data-fianca="0" id="art_inafia" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público [INAFIANÇÁVEL] (100 meses | Sem Fiança)</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="30" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (30 meses | $ 180k)</label>
                 </div>
 
                 <div class="checkbox-container" style="margin-top: 15px;">
@@ -208,9 +218,9 @@
                 </div>
 
                 <div class="calc-box">
-                    <div style="font-size: 13px; color: #c4c4cc;">Resumo do Julgamento:</div>
-                    <div id="divisao_policia" style="font-size: 14px; margin-top: 5px; color: #a8a8b3;">• Parte da Polícia (50% das multas): $ 0[cite: 11]</div>
-                    <div id="calc_tempo" style="font-size: 14px; margin-top: 5px; color: #a8a8b3;">• Tempo Total de Prisão: 0 meses</div>
+                    <div style="font-size: 13px; color: #b8b8c8;">Resumo do Julgamento:</div>
+                    <div id="divisao_policia" style="font-size: 14px; margin-top: 5px; color: #b8b8c8;">• Parte da Polícia (50% das multas): $ 0</div>
+                    <div id="calc_tempo" style="font-size: 14px; margin-top: 5px; color: #b8b8c8;">• Tempo Total de Prisão: 0 meses</div>
                     <div class="calc-result" id="calc_total">Total da Fiança: $ 1.000.000</div>
                 </div>
             </div>
@@ -295,15 +305,14 @@
             if (check.checked) {
                 input.value = "A Definir";
                 input.disabled = true;
-                input.style.backgroundColor = "#1a1a1e";
+                input.style.backgroundColor = "#141418";
             } else {
                 input.value = "";
                 input.disabled = false;
-                input.style.backgroundColor = "#121214";
+                input.style.backgroundColor = "#0b0b0d";
             }
         }
 
-        // Calculadora Penal Dinâmica com Delação e Inafiançável
         function calcularTotal() {
             const base = 1000000;
             let somaArtigosFianca = 0;
@@ -316,14 +325,14 @@
 
             const temDelacao = document.getElementById('calc_delacao').checked;
             if (temDelacao) {
-                somaArtigosFianca *= 0.7; // 30% de desconto
+                somaArtigosFianca *= 0.7;
                 somaTempo = Math.round(somaTempo * 0.7);
             }
 
             const partePolicia = somaArtigosFianca * 0.5;
             const totalGeral = base + somaArtigosFianca;
 
-            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% das multas): $ ${partePolicia.toLocaleString('pt-BR')}[cite: 11]`;
+            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% das multas): $ ${partePolicia.toLocaleString('pt-BR')}`;
             document.getElementById('calc_tempo').innerText = `• Tempo Total de Prisão: ${somaTempo} meses ${temDelacao ? '(Com Desconto de Delação)' : ''}`;
             document.getElementById('calc_total').innerText = `Total da Fiança: $ ${totalGeral.toLocaleString('pt-BR')} ${temDelacao ? '(Com Desconto)' : ''}`;
         }
@@ -371,7 +380,6 @@
                 campos.push({ name: "Sobrenome / Patente", value: document.getElementById('patente_nome').value, inline: false });
                 campos.push({ name: "Patenteador", value: document.getElementById('patente_responsavel').value, inline: false });
                 campos.push({ name: "Endereço", value: document.getElementById('patente_endereco').value, inline: false });
-                campos.push({ name: "Laudo AVCB (Bombeiros)", value: document.getElementById('patente_avcb').checked ? "Aprovado ✅" : "Pendente ❌", inline: false });
                 campos.push({ name: "Validade Automática", value: "1 Mês (Código Civil)", inline: false });
             } else if (tipoServico === 'Alvará de Soltura') {
                 campos.push({ name: "Nome do Detento", value: document.getElementById('soltura_detento_nome').value, inline: false });
@@ -389,10 +397,10 @@
             const payload = {
                 embeds: [{
                     title: `📄 Registro: ${tipoServico}`,
-                    color: 3447003,
+                    color: 13882323, // Tom dourado no embed do Discord
                     fields: campos,
                     image: { url: "attachment://comprovante.png" },
-                    footer: { text: "Painel Jurídico - Suprema Corte" }
+                    footer: { text: "Painel Jurídico - Suprema Corte Nobre" }
                 }]
             };
 
