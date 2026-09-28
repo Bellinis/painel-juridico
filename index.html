@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Jurídico - RP</title>
+    <style>
+        body { background-color: #121214; color: #e1e1e6; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background-color: #202024; padding: 30px; border-radius: 8px; width: 420px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 20px 0; }
+        h2 { color: #00b37e; text-align: center; }
+        label { display: block; margin-top: 15px; font-size: 14px; }
+        input[type="text"] { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        .checkbox-container { display: flex; align-items: center; margin-top: 8px; font-size: 14px; color: #c4c4cc; cursor: pointer; }
+        .checkbox-container input { margin-right: 8px; cursor: pointer; }
+        .upload-box { border: 2px dashed #29292e; padding: 15px; text-align: center; border-radius: 4px; margin-top: 5px; background-color: #121214; color: #8d8d99; font-size: 13px; }
+        .upload-box.has-image { border-color: #00b37e; color: #00b37e; }
+        button { width: 100%; background-color: #00b37e; color: white; border: none; padding: 12px; margin-top: 20px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        button:hover { background-color: #00875f; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Solicitação de Nome</h2>
+        <form id="formRegistro">
+            <label>ID do Passaporte:</label>
+            <input type="text" id="passaporte" required placeholder="Ex: 1687">
+
+            <label>Nome Atual:</label>
+            <input type="text" id="nomeAtual" required placeholder="Ex: Carlito Tevez">
+
+            <label>Novo Nome Desejado:</label>
+            <input type="text" id="novoNome" placeholder="Ex: Carlito Silva">
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="aDefinir" onclick="toggleNovoNome()">
+                <label for="aDefinir" style="margin-top:0;">A Definir (Cliente ainda não escolheu)</label>
+            </div>
+
+            <label>Comprovante de Pagamento (Clique aqui e dê Ctrl + V):</label>
+            <div class="upload-box" id="dropZone" contenteditable="true">
+                Clique aqui e aperte Ctrl + V para colar o print do comprovante
+            </div>
+
+            <button type="submit">Enviar Solicitação</button>
+        </form>
+    </div>
+
+    <script>
+        let imagemArquivo = null;
+
+        // Função para ativar/desativar o campo de novo nome
+        function toggleNovoNome() {
+            const inputNovoNome = document.getElementById('novoNome');
+            const checkADefinir = document.getElementById('aDefinir');
+            
+            if (checkADefinir.checked) {
+                inputNovoNome.value = "A Definir";
+                inputNovoNome.disabled = true;
+                inputNovoNome.style.backgroundColor = "#1a1a1e";
+            } else {
+                inputNovoNome.value = "";
+                inputNovoNome.disabled = false;
+                inputNovoNome.style.backgroundColor = "#121214";
+            }
+        }
+
+        // Capturar o Ctrl + V da imagem na caixa
+        const dropZone = document.getElementById('dropZone');
+        dropZone.addEventListener('paste', function(e) {
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    imagemArquivo = items[i].getAsFile();
+                    dropZone.innerText = "Imagem colada com sucesso! ✅";
+                    dropZone.classList.add('has-image');
+                    e.preventDefault();
+                    break;
+                }
+            }
+        });
+
+        document.getElementById('formRegistro').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const passaporte = document.getElementById('passaporte').value;
+            const nomeAtual = document.getElementById('nomeAtual').value;
+            const aDefinir = document.getElementById('aDefinir').checked;
+            const novoNome = aDefinir ? "A Definir" : document.getElementById('novoNome').value;
+
+            // COLE SEU LINK DO WEBHOOK DO DISCORD ABAIXO ENTRE AS ASPAS
+            const webhookURL = "COLE_SEU_WEBHOOK_AQUI";
+
+            if (!imagemArquivo) {
+                alert('Por favor, cole um print do comprovante de pagamento usando Ctrl + V na caixa indicada!');
+                return;
+            }
+
+            const formData = new FormData();
+            const payload = {
+                embeds: [{
+                    title: "📄 Solicitação de Alteração de Nome",
+                    color: 3447003,
+                    fields: [
+                        { name: "ID (Passaporte)", value: passaporte, inline: false },
+                        { name: "Nome Atual", value: nomeAtual, inline: false },
+                        { name: "Novo Nome", value: novoNome, inline: false }
+                    ],
+                    image: { url: "attachment://comprovante.png" },
+                    footer: { text: "Painel Jurídico - Sistema Automatizado" }
+                }]
+            };
+
+            formData.append('payload_json', JSON.stringify(payload));
+            formData.append('files[0]', imagemArquivo, 'comprovante.png');
+
+            try {
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if(response.ok) {
+                    alert('Solicitação enviada com sucesso para o Discord com a imagem!');
+                    document.getElementById('formRegistro').reset();
+                    dropZone.innerText = "Clique aqui e aperte Ctrl + V para colar o print do comprovante";
+                    dropZone.classList.remove('has-image');
+                    imagemArquivo = null;
+                } else {
+                    alert('Erro ao enviar. Verifique o link do Webhook.');
+                }
+            } catch (error) {
+                alert('Erro de conexão.');
+            }
+        });
+    </script>
+
+</body>
+</html>
