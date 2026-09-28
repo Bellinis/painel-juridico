@@ -40,7 +40,7 @@
         .calc-box { background-color: #121214; padding: 15px; border-radius: 6px; border: 1px solid #29292e; margin-top: 15px; }
         .calc-result { color: #00b37e; font-size: 18px; font-weight: bold; margin-top: 10px; text-align: right; }
         
-        .artigos-list { max-height: 150px; overflow-y: auto; background: #121214; border: 1px solid #29292e; padding: 10px; border-radius: 4px; margin-top: 5px; }
+        .artigos-list { max-height: 160px; overflow-y: auto; background: #121214; border: 1px solid #29292e; padding: 10px; border-radius: 4px; margin-top: 5px; }
         .artigos-list label { font-size: 13px; margin-top: 5px; display: flex; align-items: center; }
         .artigos-list input { width: auto; margin-right: 8px; }
     </style>
@@ -49,7 +49,7 @@
 
     <!-- Menu Lateral -->
     <sidebar>
-        <div class="logo">⚖️ Suprema Corte</div>
+        <div class="logo">⚖️ Suprema Corte Nine City ⚖️</div>
         
         <div class="menu-category">Dashboard</div>
         <div class="menu-item active" onclick="mudarAba('nome', this)">Alterar Nome</div>
@@ -185,26 +185,33 @@
         <div id="calculadora" class="form-section">
             <div class="card">
                 <h2>Calculadora Penal & Fiança</h2>
-                <p style="color: #8d8d99; font-size: 13px; margin-bottom: 15px;">Selecione os artigos quebrados abaixo para calcular automaticamente com a base de $ 1.000.000 do advogado[cite: 11].</p>
+                <p style="color: #8d8d99; font-size: 13px; margin-bottom: 15px;">Selecione os artigos e o tipo de cumprimento (Fiança ou Prisão).</p>
                 
                 <label>Honorários Base do Advogado ($):</label>
                 <input type="number" id="calc_base" value="1000000" readonly style="background-color: #1a1a1e; color: #00b37e;">
 
                 <label>Selecione os Artigos do Código Penal:</label>
                 <div class="artigos-list">
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (Fiança: $ 180k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (Fiança: $ 180k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="1500000" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (Fiança: $ 1.5M)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="2000000" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Servidor Público (Fiança: $ 2M)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="300000" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (Fiança: $ 300k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="450000" data-fianca="450000" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público (Fiança: $ 450k)[cite: 14]</label>
-                    <label><input type="checkbox" class="artigo-check" value="180000" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (Fiança: $ 180k)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="40" data-fianca="180000" onchange="calcularTotal()"> Art. 17 - Assalto Banco Fleeca/Paleto (40 meses | $ 180k)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="70" data-fianca="180000" onchange="calcularTotal()"> Art. 19 - Assalto Banco Central (70 meses | $ 180k)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="1500000" data-tempo="140" data-fianca="1500000" onchange="calcularTotal()"> Art. 21 - Invasão ao DP (140 meses | $ 1.5M)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="100000" data-tempo="30" data-fianca="100000" onchange="calcularTotal()"> Art. Desacato Menor (Atrapalhar Ocorrência) (30 meses | $ 100k)</label>
+                    <label><input type="checkbox" class="artigo-check" value="2000000" data-tempo="50" data-fianca="2000000" onchange="calcularTotal()"> Art. 37 - Desacato a Autoridade (50 meses | $ 2M)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="300000" data-tempo="70" data-fianca="300000" onchange="calcularTotal()"> Art. 51 - Homicídio Doloso (70 meses | $ 300k)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="0" data-tempo="100" data-fianca="0" id="art_inafia" onchange="calcularTotal()"> Art. 56 - Homicídio de Servidor Público [INAFIANÇÁVEL] (100 meses | Sem Fiança)[cite: 14]</label>
+                    <label><input type="checkbox" class="artigo-check" value="180000" data-tempo="30" data-fianca="180000" onchange="calcularTotal()"> Art. 63 - Tráfico de Drogas (30 meses | $ 180k)[cite: 14]</label>
+                </div>
+
+                <div class="checkbox-container" style="margin-top: 15px;">
+                    <input type="checkbox" id="calc_delacao" onchange="calcularTotal()">
+                    <label for="calc_delacao" style="margin-top:0;">Delação Premiada Ativa (-30% de Desconto na Fiança e Tempo)</label>
                 </div>
 
                 <div class="calc-box">
-                    <div style="font-size: 13px; color: #c4c4cc;">Divisão do Pagamento Final:</div>
-                    <div id="divisao_policia" style="font-size: 14px; margin-top: 5px; color: #a8a8b3;">• Parte da Polícia (50% das multas/fianças): $ 0[cite: 11]</div>
-                    <div class="calc-result" id="calc_total">Total Geral: $ 1.000.000</div>
+                    <div style="font-size: 13px; color: #c4c4cc;">Resumo do Julgamento:</div>
+                    <div id="divisao_policia" style="font-size: 14px; margin-top: 5px; color: #a8a8b3;">• Parte da Polícia (50% das multas): $ 0[cite: 11]</div>
+                    <div id="calc_tempo" style="font-size: 14px; margin-top: 5px; color: #a8a8b3;">• Tempo Total de Prisão: 0 meses</div>
+                    <div class="calc-result" id="calc_total">Total da Fiança: $ 1.000.000</div>
                 </div>
             </div>
         </div>
@@ -212,7 +219,7 @@
         <!-- 6. ALVARÁ DE SOLTURA -->
         <div id="soltura" class="form-section">
             <div class="card">
-                <h2>Alvará de Soltura</h2>
+                <h2>Alvará de Soltura / Cumprimento de Pena</h2>
                 <form onsubmit="enviarFormulario(event, 'Alvará de Soltura')">
                     <label>Nome do Detento:</label>
                     <input type="text" id="soltura_detento_nome" required placeholder="Ex: João da Silva">
@@ -223,15 +230,21 @@
                     <label>ID do Policial Responsável pela Prisão (In-Game):</label>
                     <input type="number" id="soltura_policial_id" required placeholder="Ex: 9988">
 
+                    <label>Desfecho Escolhido pelo Réu:</label>
+                    <select id="soltura_tipo_desfecho">
+                        <option value="Pagamento de Fiança (Liberdade com Ficha Suja)">Pagamento de Fiança (Liberdade Imediata)</option>
+                        <option value="Cumprimento de Pena Carcerária">Cumprimento de Pena (Ficar Preso pelo Tempo)</option>
+                    </select>
+
                     <div class="checkbox-container">
                         <input type="checkbox" id="soltura_delacao">
-                        <label for="soltura_delacao" style="margin-top:0;">Delação Premiada Ativa? (Informou cargo superior de facção para ação)</label>
+                        <label for="soltura_delacao" style="margin-top:0;">Delação Premiada Ativa? (Gerar aviso para invasão de sede)</label>
                     </div>
 
-                    <label>Comprovante de Pagamento da Fiança (Ctrl + V):</label>
+                    <label>Comprovante de Pagamento / Ficha (Ctrl + V):</label>
                     <div class="upload-box" id="drop_soltura" contenteditable="true">Clique aqui e aperte Ctrl + V com o print</div>
 
-                    <button type="submit" class="btn-submit">Emitir Alvará de Soltura</button>
+                    <button type="submit" class="btn-submit">Emitir Documento de Soltura / Prisão</button>
                 </form>
             </div>
         </div>
@@ -283,20 +296,29 @@
             }
         }
 
-        // Calculadora Penal Dinâmica baseada nos artigos
+        // Calculadora Penal Dinâmica com Delação e Inafiançável
         function calcularTotal() {
             const base = 1000000;
-            let somaArtigos = 0;
+            let somaArtigosFianca = 0;
+            let somaTempo = 0;
             
             document.querySelectorAll('.artigo-check:checked').forEach(chk => {
-                somaArtigos += parseFloat(chk.getAttribute('data-fianca')) || 0;
+                somaArtigosFianca += parseFloat(chk.getAttribute('data-fianca')) || 0;
+                somaTempo += parseInt(chk.getAttribute('data-tempo')) || 0;
             });
 
-            const partePolicia = somaArtigos * 0.5;
-            const totalGeral = base + somaArtigos;
+            const temDelacao = document.getElementById('calc_delacao').checked;
+            if (temDelacao) {
+                somaArtigosFianca *= 0.7; // 30% de desconto
+                somaTempo = Math.round(somaTempo * 0.7);
+            }
 
-            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% dos artigos): $ ${partePolicia.toLocaleString('pt-BR')}`;
-            document.getElementById('calc_total').innerText = `Total Geral: $ ${totalGeral.toLocaleString('pt-BR')}`;
+            const partePolicia = somaArtigosFianca * 0.5;
+            const totalGeral = base + somaArtigosFianca;
+
+            document.getElementById('divisao_policia').innerText = `• Parte da Polícia (50% das multas): $ ${partePolicia.toLocaleString('pt-BR')}`;
+            document.getElementById('calc_tempo').innerText = `• Tempo Total de Prisão: ${somaTempo} meses ${temDelacao ? '(Com Desconto de Delação)' : ''}`;
+            document.getElementById('calc_total').innerText = `Total da Fiança: $ ${totalGeral.toLocaleString('pt-BR')} ${temDelacao ? '(Com Desconto)' : ''}`;
         }
 
         let imagensSalvas = {};
@@ -348,6 +370,7 @@
                 campos.push({ name: "Nome do Detento", value: document.getElementById('soltura_detento_nome').value, inline: false });
                 campos.push({ name: "ID do Detento", value: document.getElementById('soltura_detento_id').value, inline: false });
                 campos.push({ name: "ID do Policial Responsável", value: document.getElementById('soltura_policial_id').value, inline: false });
+                campos.push({ name: "Desfecho Escolhido", value: document.getElementById('soltura_tipo_desfecho').value, inline: false });
                 campos.push({ name: "Delação Premiada", value: document.getElementById('soltura_delacao').checked ? "Ativa 🚨 (Aviso para Invasão de Sede)" : "Não", inline: false });
             } else if (tipoServico === 'Casamento') {
                 campos.push({ name: "IDs dos Noivos", value: document.getElementById('casamento_ids').value, inline: false });
