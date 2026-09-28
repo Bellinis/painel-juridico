@@ -432,20 +432,16 @@
                 const canvas = document.getElementById('canvasCertificado');
                 const ctx = canvas.getContext('2d');
 
-                // Fundo Branco Clássico / Marfim Claro
                 ctx.fillStyle = "#fcfbfa";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Borda Dourada Externa Grossa
                 ctx.strokeStyle = "#c5a059";
                 ctx.lineWidth = 6;
                 ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
 
-                // Borda Dourada Interna Fina
                 ctx.lineWidth = 1.5;
                 ctx.strokeRect(42, 42, canvas.width - 84, canvas.height - 84);
 
-                // Cabeçalho Oficial
                 ctx.fillStyle = "#1a1a1a";
                 ctx.font = "bold 24px 'Segoe UI'";
                 ctx.textAlign = "center";
@@ -455,12 +451,10 @@
                 ctx.font = "bold 14px 'Segoe UI'";
                 ctx.fillText("DOCUMENTO OFICIAL JURÍDICO", canvas.width / 2, 125);
 
-                // Título da Certidão
                 ctx.fillStyle = "#2c2c2c";
                 ctx.font = "bold 20px 'Segoe UI'";
                 ctx.fillText(titulo.toUpperCase(), canvas.width / 2, 185);
 
-                // Linha divisória elegante
                 ctx.strokeStyle = "#c5a059";
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -468,7 +462,6 @@
                 ctx.lineTo(canvas.width - 120, 215);
                 ctx.stroke();
 
-                // Corpo do Texto (Dados do Processo)
                 ctx.textAlign = "left";
                 ctx.font = "16px 'Segoe UI'";
                 ctx.fillStyle = "#333333";
@@ -479,10 +472,8 @@
                     yPos += 45;
                 });
 
-                // --- RODAPÉ E ASSINATURA ---
                 const linhaY = canvas.height - 180;
 
-                // Linha de Assinatura
                 ctx.strokeStyle = "#8c8c8c";
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
@@ -490,13 +481,11 @@
                 ctx.lineTo(canvas.width / 2 + 180, linhaY);
                 ctx.stroke();
 
-                // Assinatura em Fonte Cursiva Manuscrita EXATAMENTE POR CIMA DA LINHA
                 ctx.fillStyle = "#1b3b6f";
                 ctx.font = "42px 'Great Vibes', cursive";
                 ctx.textAlign = "center";
                 ctx.fillText(advogado, canvas.width / 2, linhaY - 12);
 
-                // Texto identificador abaixo da linha
                 ctx.fillStyle = "#555555";
                 ctx.font = "13px 'Segoe UI'";
                 ctx.fillText("Advogado(a) Responsável / Autoridade Competente", canvas.width / 2, linhaY + 25);
@@ -510,10 +499,15 @@
         async function enviarFormulario(event, tipoServico) {
             event.preventDefault();
 
-            // COLE SEU LINK DO WEBHOOK DO DISCORD DO CANAL #REGISTRO ABAIXO ENTRE AS ASPAS
-            const webhookURL = "https://discord.com/api/webhooks/1554146017572561090/gHDKqdaHVTltcnTgD5vJgJ718v99l8t2MeWwYPcgHRQDic19la0aL3QEmKNJFyxSEngO";
+            // ⚠️ COLOQUE SEU LINK DO WEBHOOK DO DISCORD ABAIXO ENTRE AS ASPAS ⚠️
+            const webhookURL = "https://discord.com/api/webhooks/1554222566103846965/fmU_-x37upf0ujTZD82PqUFfuut5Arbr_RR7YcJ9XL8pfmcP7VUBNyiHALKo_OUe0DXR";
 
-            const nomeAdvogado = localStorage.getItem('advogado_nome_ninecity') || "Advocacia Suprema";
+            if (!webhookURL || webhookURL.includes("COLE_SEU_WEBHOOK_AQUI")) {
+                alert("Erro: Você esqueceu de colar o link do Webhook do Discord no código!");
+                return;
+            }
+
+            const nomeAdvogado = localStorage.getItem('advogado_nome_ninecity') || document.getElementById('advogado_global')?.value || "Advocacia Suprema";
             let campos = [];
             let linhasCertificado = [];
 
@@ -626,25 +620,25 @@
 
             campos.push({ name: "⚖️ Advogado(a) Responsável", value: nomeAdvogado, inline: false });
 
-            // Gera a imagem vertical em formato de certificado de alto padrão
-            const blobCertificado = await gerarImagemCertificado(`Certificado Oficial - ${tipoServico}`, linhasCertificado, nomeAdvogado);
-
-            const formData = new FormData();
-            const payload = {
-                embeds: [{
-                    title: `📄 Registro Oficial: ${tipoServico}`,
-                    color: 13882323,
-                    fields: campos,
-                    image: { url: "attachment://certificado.png" },
-                    footer: { text: `Emitido por ${nomeAdvogado} • Suprema Corte Nine City` },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            formData.append('payload_json', JSON.stringify(payload));
-            formData.append('files[0]', blobCertificado, 'certificado.png');
-
             try {
+                // Gera a imagem vertical do certificado
+                const blobCertificado = await gerarCertificadoVertical(`Certificado Oficial - ${tipoServico}`, linhasCertificado, nomeAdvogado);
+
+                const formData = new FormData();
+                const payload = {
+                    embeds: [{
+                        title: `📄 Registro Oficial: ${tipoServico}`,
+                        color: 13882323,
+                        fields: campos,
+                        image: { url: "attachment://certificado.png" },
+                        footer: { text: `Emitido por ${nomeAdvogado} • Suprema Corte Nine City` },
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
+                formData.append('payload_json', JSON.stringify(payload));
+                formData.append('files[0]', blobCertificado, 'certificado.png');
+
                 const response = await fetch(webhookURL, {
                     method: 'POST',
                     body: formData
@@ -653,11 +647,17 @@
                 if(response.ok) {
                     alert('Certificado vertical gerado e enviado com sucesso para o canal #registro!');
                     event.target.reset();
+                    // Restaura o nome salvo no campo global após resetar
+                    const salvo = localStorage.getItem('advogado_nome_ninecity');
+                    if(salvo) document.getElementById('advogado_global').value = salvo;
                 } else {
-                    alert('Erro ao enviar. Verifique o link do Webhook do Discord.');
+                    const errText = await response.text();
+                    console.error("Erro do Discord:", errText);
+                    alert('Erro ao enviar para o Discord. Verifique o console (F12) para detalhes.');
                 }
             } catch (error) {
-                alert('Erro de conexão ao enviar para o Discord.');
+                console.error("Erro de conexão:", error);
+                alert('Erro de conexão ou falha ao gerar a imagem do certificado.');
             }
         }
     </script>
