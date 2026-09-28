@@ -8,7 +8,10 @@
         .card { background-color: #202024; padding: 30px; border-radius: 8px; width: 420px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin: 20px 0; }
         h2 { color: #00b37e; text-align: center; }
         label { display: block; margin-top: 15px; font-size: 14px; }
-        input[type="text"] { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 10px; margin-top: 5px; background-color: #121214; border: 1px solid #29292e; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        /* Remove as setinhas feias do campo de número em alguns navegadores */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         .checkbox-container { display: flex; align-items: center; margin-top: 8px; font-size: 14px; color: #c4c4cc; cursor: pointer; }
         .checkbox-container input { margin-right: 8px; cursor: pointer; }
         .upload-box { border: 2px dashed #29292e; padding: 15px; text-align: center; border-radius: 4px; margin-top: 5px; background-color: #121214; color: #8d8d99; font-size: 13px; }
@@ -23,7 +26,7 @@
         <h2>Solicitação de Nome</h2>
         <form id="formRegistro">
             <label>ID do Passaporte:</label>
-            <input type="text" id="passaporte" required placeholder="Ex: 1687">
+            <input type="number" id="passaporte" required placeholder="Ex: 1687">
 
             <label>Nome Atual:</label>
             <input type="text" id="nomeAtual" required placeholder="Ex: Carlito Tevez">
@@ -48,7 +51,6 @@
     <script>
         let imagemArquivo = null;
 
-        // Função para ativar/desativar o campo de novo nome
         function toggleNovoNome() {
             const inputNovoNome = document.getElementById('novoNome');
             const checkADefinir = document.getElementById('aDefinir');
@@ -64,7 +66,6 @@
             }
         }
 
-        // Capturar o Ctrl + V da imagem na caixa
         const dropZone = document.getElementById('dropZone');
         dropZone.addEventListener('paste', function(e) {
             const items = (e.clipboardData || e.originalEvent.clipboardData).items;
