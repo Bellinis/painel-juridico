@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Painel Jurídico - Suprema Corte Nine City</title>
-    <!-- Importação de fonte cursiva elegante para a assinatura -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Importação da fonte cursiva idêntica ao modelo (Petit Formal Script / Great Vibes combinadas) -->
+    <link href="https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0b0b0d; color: #e1e1e6; display: flex; height: 100vh; overflow: hidden; }
@@ -333,7 +333,7 @@
 
     </div>
 
-    <!-- Canvas com Altura Expandida (1300px) para não cortar nada -->
+    <!-- Canvas com Margem Segura e Centralizada -->
     <canvas id="canvasCertificado" width="850" height="1300" style="display:none;"></canvas>
 
     <script>
@@ -425,7 +425,7 @@
             });
         });
 
-        // Gerador de Imagem sem cortes com espaçamento seguro
+        // Gerador de Imagem com Posicionamento Seguro e Fonte Cursiva Exata
         function gerarCertificadoModelo(titulo, infoCabecalho, textoPrincipal, advogado) {
             return new Promise((resolve) => {
                 const canvas = document.getElementById('canvasCertificado');
@@ -435,7 +435,7 @@
                 ctx.fillStyle = "#ffffff";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Ondas Azuis de Fundo
+                // Ondas Azuis de Fundo Suaves nas Laterais
                 ctx.fillStyle = "rgba(220, 235, 255, 0.6)";
                 ctx.beginPath();
                 ctx.arc(canvas.width + 100, -50, 450, 0, Math.PI * 2);
@@ -446,57 +446,57 @@
                 ctx.arc(-50, canvas.height + 100, 500, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Título Principal com espaçamento seguro a partir de Y=80
+                // Título Principal com margem segura garantida (X = 90) para não cortar nada
                 ctx.fillStyle = "#112233";
                 ctx.font = "bold 32px 'Segoe UI'";
-                ctx.fillText(titulo.toUpperCase(), 70, 80);
+                ctx.fillText(titulo.toUpperCase(), 90, 100);
 
                 // Bloco de Dados do Cidadão
                 ctx.font = "20px 'Segoe UI'";
                 ctx.fillStyle = "#222222";
-                let yInfo = 135;
+                let yInfo = 160;
                 infoCabecalho.forEach(linha => {
-                    ctx.fillText(linha, 70, yInfo);
-                    yInfo += 32;
+                    ctx.fillText(linha, 90, yInfo);
+                    yInfo += 35;
                 });
 
                 // Linha divisória
                 ctx.strokeStyle = "#d0dce8";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.moveTo(70, yInfo + 15);
-                ctx.lineTo(canvas.width - 70, yInfo + 15);
+                ctx.moveTo(90, yInfo + 15);
+                ctx.lineTo(canvas.width - 90, yInfo + 15);
                 ctx.stroke();
 
                 // Texto Descritivo / Laudo Formal
                 ctx.font = "20px 'Segoe UI'";
                 ctx.fillStyle = "#333333";
-                let yTexto = yInfo + 60;
+                let yTexto = yInfo + 70;
                 
                 textoPrincipal.forEach(paragrafo => {
-                    ctx.fillText(paragrafo, 70, yTexto);
-                    yTexto += 40;
+                    ctx.fillText(paragrafo, 90, yTexto);
+                    yTexto += 45;
                 });
 
-                // Bloco de Assinatura (Posicionado de forma segura no rodapé)
-                const linhaY = canvas.height - 180;
+                // Bloco de Assinatura (Posicionado com segurança no rodapé)
+                const linhaY = canvas.height - 200;
 
-                ctx.strokeStyle = "#666666";
+                ctx.strokeStyle = "#888888";
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.moveTo(150, linhaY);
                 ctx.lineTo(canvas.width - 150, linhaY);
                 ctx.stroke();
 
-                // Assinatura em Fonte Cursiva Manuscrita EXATAMENTE POR CIMA DA LINHA
+                // Assinatura com a fonte cursiva exata solicitada (Petit Formal Script)
                 ctx.fillStyle = "#1b3b6f";
-                ctx.font = "52px 'Great Vibes', cursive";
+                ctx.font = "56px 'Petit Formal Script', cursive";
                 ctx.textAlign = "center";
-                ctx.fillText(advogado, canvas.width / 2, linhaY - 15);
+                ctx.fillText(advogado, canvas.width / 2, linhaY - 18);
 
-                // Cargo e Identificação
+                // Cargo e Identificação abaixo
                 ctx.fillStyle = "#444444";
-                ctx.font = "bold 16px 'Segoe UI'";
+                ctx.font = "bold 15px 'Segoe UI'";
                 ctx.fillText(`ADVOGADO(A) • SUPREMA CORTE NINE CITY`, canvas.width / 2, linhaY + 35);
 
                 canvas.toBlob(function(blob) {
@@ -550,7 +550,6 @@
                 }
 
             } else {
-                // Para os demais serviços, gera a imagem oficial estilizada
                 let infoCabecalho = [];
                 let textoPrincipal = [];
 
